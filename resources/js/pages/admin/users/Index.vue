@@ -49,7 +49,9 @@ const breadcrumbs: BreadcrumbItem[] = [
                         <TableCell class="">
                             <div class="flex w-full items-center justify-end space-x-2">
                                 <Button type="button" variant="destructive" size="sm"><Trash2 /></Button>
-                                <Button type="button" variant="secondary" size="sm"><Pen /></Button>
+                                <Link :href="route('users.edit', { user: user.id })">
+                                    <Button type="button" variant="secondary" size="sm"><Pen /></Button>
+                                </Link>
                             </div>
                         </TableCell>
                     </TableRow>

@@ -28,21 +28,26 @@ class UserController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(Request $request) {
-        dd($request->all(['name', 'email', 'password']));
+        $validated =   $request->validate([
+            'name' => ['required', 'max:255', 'min:2'],
+            'email' => ['required', 'email', 'unique:users,email'],
+            'password' => ['required', 'min:6', 'max:255'],
+        ]);
+        $user =    User::create($validated);
+        return redirect()->route('users.index')->with('success', 'User Created Successfully');
     }
 
     /**
      * Display the specified resource.
      */
     public function show(User $user) {
-        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(User $user) {
-        //
+        return inertia('admin/users/Update', ['user' => $user]);
     }
 
     /**
