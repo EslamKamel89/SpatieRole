@@ -10,7 +10,9 @@ class UserController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
-        return inertia('admin/users/Index');
+        return inertia('admin/users/Index', [
+            'users' => User::all(),
+        ]);
     }
 
     /**
