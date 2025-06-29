@@ -21,14 +21,20 @@ const breadcrumbs: BreadcrumbItem[] = [
 const form = useForm({
     name: props.user.name,
     email: props.user.email,
-    password: '',
+    password: '' as string | null,
 });
+const submit = async () => {
+    form.transform((data) => {
+        if (data.password === '') data.password = null;
+        return data;
+    }).put(route('users.update', { user: props.user.id }), {});
+};
 </script>
 <template>
     <Head title="Create User" />
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-            <form @submit.prevent="form.post(route('users.store'))" class="flex w-full flex-col items-center space-y-3">
+            <form @submit.prevent="submit" class="flex w-full flex-col items-center space-y-3">
                 <div class="grid w-full max-w-sm items-center gap-1.5">
                     <Label for="name">Name</Label>
                     <Input v-model="form.name" id="name" type="text" placeholder="Name" />
@@ -41,7 +47,7 @@ const form = useForm({
                 </div>
                 <div class="grid w-full max-w-sm items-center gap-1.5">
                     <Label for="password">Password</Label>
-                    <Input v-model="form.password" id="password" type="password" placeholder="Password" />
+                    <Input v-model="form.password!" id="password" type="password" placeholder="Password" />
                     <div class="text-xs font-thin text-red-700" v-if="form.errors.password">{{ form.errors.password }}</div>
                 </div>
                 <Button type="submit" class="max-w-sm">Update</Button>

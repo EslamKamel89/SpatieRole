@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { BreadcrumbItem, User } from '@/types';
 import { Head, Link } from '@inertiajs/vue3';
-import { Pen, Plus, Trash2 } from 'lucide-vue-next';
+import { Eye, Pen, Plus, Trash2 } from 'lucide-vue-next';
 const props = defineProps<{
     users: User[];
 }>();
@@ -48,7 +48,10 @@ const breadcrumbs: BreadcrumbItem[] = [
                         <TableCell> {{ user.created_at }}</TableCell>
                         <TableCell class="">
                             <div class="flex w-full items-center justify-end space-x-2">
-                                <Button type="button" variant="destructive" size="sm"><Trash2 /></Button>
+                                <Link method="delete" :href="route('users.destroy', { user: user.id })">
+                                    <Button type="button" variant="destructive" size="sm"><Trash2 /></Button>
+                                </Link>
+                                <Button type="button" variant="default" size="sm"><Eye /></Button>
                                 <Link :href="route('users.edit', { user: user.id })">
                                     <Button type="button" variant="secondary" size="sm"><Pen /></Button>
                                 </Link>

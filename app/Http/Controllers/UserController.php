@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller {
     /**
@@ -54,13 +55,23 @@ class UserController extends Controller {
      * Update the specified resource in storage.
      */
     public function update(Request $request, User $user) {
-        //
+        $validated =   $request->validate([
+            'name' => ['required', 'max:255', 'min:2'],
+            'email' => ['required', 'email', Rule::unique('users', 'email')->ignoreModel($user)],
+            'password' => ['sometimes', 'nullable', 'min:6', 'max:255'],
+        ]);
+        if ($validated['password'] == '') {
+            unset($validated['password']);
+        }
+        $user->update($validated);
+        return redirect()->route('users.index')->with('success', 'User Created Successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(User $user) {
-        //
+        $user->delete();
+        return redirect()->route('users.index')->with('success', 'User Deleted Successfully');
     }
 }
