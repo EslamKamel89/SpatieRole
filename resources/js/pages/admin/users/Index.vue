@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import CustomDialog from '@/components/shared/CustomDialog.vue';
 import Button from '@/components/ui/button/Button.vue';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { BreadcrumbItem, User } from '@/types';
 import { Head, Link } from '@inertiajs/vue3';
 import { Eye, Pen, Plus, Trash2 } from 'lucide-vue-next';
+import Show from './Show.vue';
 const props = defineProps<{
     users: User[];
 }>();
@@ -51,7 +53,14 @@ const breadcrumbs: BreadcrumbItem[] = [
                                 <Link method="delete" :href="route('users.destroy', { user: user.id })">
                                     <Button type="button" variant="destructive" size="sm"><Trash2 /></Button>
                                 </Link>
-                                <Button type="button" variant="default" size="sm"><Eye /></Button>
+                                <CustomDialog title="View User" description="">
+                                    <template #trigger>
+                                        <Button type="button" variant="default" size="sm"><Eye /></Button>
+                                    </template>
+                                    <template #content>
+                                        <Show :user-id="user.id" />
+                                    </template>
+                                </CustomDialog>
                                 <Link :href="route('users.edit', { user: user.id })">
                                     <Button type="button" variant="secondary" size="sm"><Pen /></Button>
                                 </Link>
