@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -8,7 +9,10 @@ Route::get('/', function () {
     return Inertia::render('Welcome');
 })->name('home');
 
-Route::resource('/users', UserController::class);
+Route::middleware('auth')->group(function () {
+    Route::resource('/users', UserController::class);
+    Route::resource('/roles', RoleController::class);
+});
 
 Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
