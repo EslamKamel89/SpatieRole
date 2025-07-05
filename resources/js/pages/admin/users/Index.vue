@@ -4,7 +4,7 @@ import Button from '@/components/ui/button/Button.vue';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { BreadcrumbItem, User } from '@/types';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import { Eye, Pen, Plus, Trash2 } from 'lucide-vue-next';
 import Show from './Show.vue';
 const props = defineProps<{
@@ -16,6 +16,11 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/dashboard',
     },
 ];
+const deleteUser = (user: User) => {
+    const confirmAction = confirm('Are You sure you want to delete this user');
+    if (!confirmAction) return;
+    router.delete(route('users.destroy', { user: user.id }));
+};
 </script>
 <template>
     <Head title="Users Table" />
@@ -50,9 +55,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                         <TableCell> {{ user.created_at }}</TableCell>
                         <TableCell class="">
                             <div class="flex w-full items-center justify-end space-x-2">
-                                <Link method="delete" :href="route('users.destroy', { user: user.id })">
-                                    <Button type="button" variant="destructive" size="sm"><Trash2 /></Button>
-                                </Link>
+                                <Button @click="deleteUser(user)" type="button" variant="destructive" size="sm"><Trash2 /></Button>
                                 <CustomDialog title="View User" description="">
                                     <template #trigger>
                                         <Button type="button" variant="default" size="sm"><Eye /></Button>
