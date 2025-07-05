@@ -3,6 +3,7 @@ import CustomDialog from '@/components/shared/CustomDialog.vue';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/AppLayout.vue';
+import Show from '@/pages/admin/roles/Show.vue';
 import { BreadcrumbItem } from '@/types';
 import { Role } from '@/types/app';
 import { Head, Link } from '@inertiajs/vue3';
@@ -54,7 +55,7 @@ const deleteRole = (role: Role) => {};
                                         <Button type="button" variant="default" size="sm"><Eye /></Button>
                                     </template>
                                     <template #content>
-                                        <Show :user-id="role.id" />
+                                        <Show :role-id="role.id" />
                                     </template>
                                 </CustomDialog>
                                 <Link :href="route('users.edit', { role: role.id })">
