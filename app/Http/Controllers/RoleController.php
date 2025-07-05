@@ -10,6 +10,9 @@ class RoleController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
+        return inertia('admin/roles/Index', [
+            'roles' => Role::all(),
+        ]);
     }
 
     /**
