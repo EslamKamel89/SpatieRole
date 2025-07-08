@@ -58,7 +58,7 @@ const deleteRole = (role: Role) => {};
                                         <Show :role-id="role.id" />
                                     </template>
                                 </CustomDialog>
-                                <Link :href="route('users.edit', { role: role.id })">
+                                <Link :href="route('roles.edit', { role: role.id })">
                                     <Button type="button" variant="secondary" size="sm"><Pen /></Button>
                                 </Link>
                             </div>
