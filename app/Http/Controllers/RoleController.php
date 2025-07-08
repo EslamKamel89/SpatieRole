@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller {
@@ -19,7 +20,10 @@ class RoleController extends Controller {
      * Show the form for creating a new resource.
      */
     public function create() {
-        //
+        return inertia(
+            'admin/roles/Create',
+            ['permissions' => Permission::all()]
+        );
     }
 
     /**
