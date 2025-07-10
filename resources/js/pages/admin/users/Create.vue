@@ -2,8 +2,16 @@
 import Button from '@/components/ui/button/Button.vue';
 import Input from '@/components/ui/input/Input.vue';
 import Label from '@/components/ui/label/Label.vue';
+import Select from '@/components/ui/select/Select.vue';
+import SelectContent from '@/components/ui/select/SelectContent.vue';
+import SelectGroup from '@/components/ui/select/SelectGroup.vue';
+import SelectItem from '@/components/ui/select/SelectItem.vue';
+import SelectLabel from '@/components/ui/select/SelectLabel.vue';
+import SelectTrigger from '@/components/ui/select/SelectTrigger.vue';
+import SelectValue from '@/components/ui/select/SelectValue.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { BreadcrumbItem } from '@/types';
+import { Role } from '@/types/app';
 import { Head, useForm } from '@inertiajs/vue3';
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -19,7 +27,11 @@ const form = useForm({
     name: '',
     email: '',
     password: '',
+    roleId: null as number | null,
 });
+const props = defineProps<{
+    roles: Role[];
+}>();
 </script>
 <template>
     <Head title="Create User" />
@@ -41,7 +53,21 @@ const form = useForm({
                     <Input v-model="form.password" id="password" type="password" placeholder="Password" />
                     <div class="text-xs font-thin text-red-700" v-if="form.errors.password">{{ form.errors.password }}</div>
                 </div>
-                <Button type="submit" class="max-w-sm">Create</Button>
+                <div class="grid w-full items-center gap-1.5">
+                    <Label for="password">Select Role</Label>
+                    <Select v-model="form.roleId">
+                        <SelectTrigger class="w-full">
+                            <SelectValue placeholder="Select Role" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectLabel>Roles</SelectLabel>
+                                <SelectItem v-for="role in roles" :key="role.id" :value="role.id"> {{ role.name }} </SelectItem>
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                </div>
+                <Button type="submit" class="w-fit">Create</Button>
             </form>
         </div>
     </AppLayout>

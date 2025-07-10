@@ -6,6 +6,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller {
     /**
@@ -22,7 +23,9 @@ class UserController extends Controller {
      * Show the form for creating a new resource.
      */
     public function create() {
-        return inertia('admin/users/Create');
+        return inertia('admin/users/Create', [
+            'roles' => Role::all(),
+        ]);
     }
 
     /**
