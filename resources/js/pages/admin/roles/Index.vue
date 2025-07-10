@@ -8,7 +8,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import Show from '@/pages/admin/roles/Show.vue';
 import { BreadcrumbItem } from '@/types';
 import { Role } from '@/types/app';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import { Eye, Pen, Plus, Trash2 } from 'lucide-vue-next';
 const props = defineProps<{
     roles: Role[];
@@ -19,7 +19,11 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/dashboard',
     },
 ];
-const deleteRole = (role: Role) => {};
+const deleteRole = (role: Role) => {
+    const confirmAction = confirm('Are You sure you want to delete this role');
+    if (!confirmAction) return;
+    router.delete(route('roles.destroy', { role: role.id }));
+};
 </script>
 <template>
     <Head title="Roles Table" />
