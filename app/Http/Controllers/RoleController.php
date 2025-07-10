@@ -12,7 +12,7 @@ class RoleController extends Controller {
      */
     public function index() {
         return inertia('admin/roles/Index', [
-            'roles' => Role::all(),
+            'roles' => Role::with(['permissions'])->get(),
         ]);
     }
 

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import CustomDialog from '@/components/shared/CustomDialog.vue';
+import Badge from '@/components/ui/badge/Badge.vue';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import formatDateTime from '@/helpers/formatDateTime';
 import AppLayout from '@/layouts/AppLayout.vue';
 import Show from '@/pages/admin/roles/Show.vue';
 import { BreadcrumbItem } from '@/types';
@@ -35,7 +37,7 @@ const deleteRole = (role: Role) => {};
                 <TableHeader>
                     <TableRow>
                         <TableHead class="w-[100px]"> Name </TableHead>
-                        <TableHead>Guard Name</TableHead>
+                        <TableHead>Permissions</TableHead>
                         <TableHead> Created At </TableHead>
                         <TableHead class="text-right"> Actions </TableHead>
                     </TableRow>
@@ -45,8 +47,12 @@ const deleteRole = (role: Role) => {};
                         <TableCell class="font-medium">
                             {{ role.name }}
                         </TableCell>
-                        <TableCell>{{ role.guard_name }}</TableCell>
-                        <TableCell> {{ role.created_at }}</TableCell>
+                        <TableCell>
+                            <div class="flex flex-wrap gap-1">
+                                <Badge v-for="permission in role.permissions" :key="permission.id" variant="secondary">{{ permission.name }}</Badge>
+                            </div>
+                        </TableCell>
+                        <TableCell> {{ formatDateTime(role.created_at) }}</TableCell>
                         <TableCell class="">
                             <div class="flex w-full items-center justify-end space-x-2">
                                 <Button @click="deleteRole(role)" type="button" variant="destructive" size="sm"><Trash2 /></Button>
