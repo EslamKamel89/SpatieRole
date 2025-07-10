@@ -30,7 +30,16 @@ class RoleController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(Request $request) {
-        dd($request->all());
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'permissions' => 'required|array'
+        ]);
+        $role = Role::create([
+            'name' => $request->name,
+            'guard_name' => 'web',
+        ]);
+        $role->permissions()->sync($request->permissions);
+        return redirect()->route('roles.index');
     }
 
     /**
