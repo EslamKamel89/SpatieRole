@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Badge from '@/components/ui/badge/Badge.vue';
 import Skeleton from '@/components/ui/skeleton/Skeleton.vue';
 import { Role } from '@/types/app';
 import { onMounted, ref } from 'vue';
@@ -30,6 +31,12 @@ onMounted(async () => {
             <div class="text-xs font-thin">Guard Name:</div>
             <div>{{ role?.guard_name }}</div>
         </div>
+        <div>
+            <div class="text-xs font-thin">Permissons</div>
+            <div class="mt-1 flex flex-wrap gap-1">
+                <Badge v-for="permission in role?.permissions" :key="permission.id" variant="secondary">{{ permission.name }}</Badge>
+            </div>
+        </div>
     </div>
     <div v-else class="space-y-4">
         <div class="space-y-2">
@@ -39,6 +46,12 @@ onMounted(async () => {
         <div class="space-y-2">
             <Skeleton class="h-4 w-1/3" />
             <Skeleton class="h-8 w-full" />
+        </div>
+        <div class="space-y-2">
+            <Skeleton class="h-4 w-1/3" />
+            <div class="mt-1 flex flex-wrap gap-1">
+                <Badge v-for="i in 6" :key="i" variant="secondary"> <Skeleton class="h-4 w-20" /></Badge>
+            </div>
         </div>
     </div>
 </template>

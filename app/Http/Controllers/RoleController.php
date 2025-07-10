@@ -46,21 +46,35 @@ class RoleController extends Controller {
      * Display the specified resource.
      */
     public function show(Role $role) {
-        //
+        $role->load('permissions');
+        return $role;
     }
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Role $role) {
-        //
+        $role->load('permissions');
+        return inertia('admin/roles/Update', [
+            'role' => $role,
+            'permissions' => Permission::all(),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Role $role) {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'permissions' => 'required|array'
+        ]);
+        $role->update([
+            'name' => $request->name,
+            'guard_name' => 'web',
+        ]);
+        $role->permissions()->sync($request->permissions);
+        return redirect()->route('roles.index');
     }
 
     /**
