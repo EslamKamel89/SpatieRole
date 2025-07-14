@@ -35,8 +35,13 @@ class UserController extends Controller {
             'name' => ['required', 'max:255', 'min:2'],
             'email' => ['required', 'email', 'unique:users,email'],
             'password' => ['required', 'min:6', 'max:255'],
+            'roleId' => ['sometimes', 'numeric', 'exists:roles,id'],
         ]);
-        $user =    User::create($validated);
+        /** @var User $user */
+        $user =    User::create(collect($validated)->except('roleId')->toArray());
+        if (isset($validated['roleId'])) {
+            $user->roles()->sync($validated['roleId']);
+        }
         return redirect()->route('users.index')->with('success', 'User Created Successfully');
     }
 
