@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import CustomDialog from '@/components/shared/CustomDialog.vue';
+import Badge from '@/components/ui/badge/Badge.vue';
 import Button from '@/components/ui/button/Button.vue';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/AppLayout.vue';
@@ -42,6 +43,7 @@ const deleteUser = (user: User) => {
                     <TableRow>
                         <TableHead class="w-[100px]"> Name </TableHead>
                         <TableHead>Email</TableHead>
+                        <TableHead> Roles </TableHead>
                         <TableHead> Created At </TableHead>
                         <TableHead class="text-right"> Actions </TableHead>
                     </TableRow>
@@ -52,6 +54,11 @@ const deleteUser = (user: User) => {
                             {{ user.name }}
                         </TableCell>
                         <TableCell>{{ user.email }}</TableCell>
+                        <TableCell>
+                            <div class="flex flex-wrap gap-1">
+                                <Badge v-for="role in user.roles" :key="role.id" variant="secondary">{{ role.name }}</Badge>
+                            </div>
+                        </TableCell>
                         <TableCell> {{ user.created_at }}</TableCell>
                         <TableCell class="">
                             <div class="flex w-full items-center justify-end space-x-2">

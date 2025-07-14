@@ -14,8 +14,7 @@ class UserController extends Controller {
      */
     public function index() {
         return inertia('admin/users/Index', [
-            'users' => UserResource::collection(User::all()),
-            // 'users' => User::all(),
+            'users' => UserResource::collection(User::with(['roles'])->get()),
         ]);
     }
 
