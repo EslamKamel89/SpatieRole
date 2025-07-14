@@ -3,6 +3,7 @@ import CustomDialog from '@/components/shared/CustomDialog.vue';
 import Badge from '@/components/ui/badge/Badge.vue';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { can } from '@/helpers/can';
 import formatDateTime from '@/helpers/formatDateTime';
 import AppLayout from '@/layouts/AppLayout.vue';
 import Show from '@/pages/admin/roles/Show.vue';
@@ -30,7 +31,7 @@ const deleteRole = (role: Role) => {
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
             <div class="flex w-full justify-end">
-                <Link :href="route('roles.create')">
+                <Link :href="route('roles.create')" v-if="can('roles.create')">
                     <Button type="button">
                         <Plus />
                         <span>Role</span>
@@ -59,7 +60,9 @@ const deleteRole = (role: Role) => {
                         <TableCell> {{ formatDateTime(role.created_at) }}</TableCell>
                         <TableCell class="">
                             <div class="flex w-full items-center justify-end space-x-2">
-                                <Button @click="deleteRole(role)" type="button" variant="destructive" size="sm"><Trash2 /></Button>
+                                <Button v-if="can('roles.delete')" @click="deleteRole(role)" type="button" variant="destructive" size="sm"
+                                    ><Trash2
+                                /></Button>
                                 <CustomDialog title="View User" description="">
                                     <template #trigger>
                                         <Button type="button" variant="default" size="sm"><Eye /></Button>
@@ -68,7 +71,7 @@ const deleteRole = (role: Role) => {
                                         <Show :role-id="role.id" />
                                     </template>
                                 </CustomDialog>
-                                <Link :href="route('roles.edit', { role: role.id })">
+                                <Link v-if="can('roles.update')" :href="route('roles.edit', { role: role.id })">
                                     <Button type="button" variant="secondary" size="sm"><Pen /></Button>
                                 </Link>
                             </div>

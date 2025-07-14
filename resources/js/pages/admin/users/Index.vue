@@ -3,6 +3,7 @@ import CustomDialog from '@/components/shared/CustomDialog.vue';
 import Badge from '@/components/ui/badge/Badge.vue';
 import Button from '@/components/ui/button/Button.vue';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { can } from '@/helpers/can';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { BreadcrumbItem, User } from '@/types';
 import { Head, Link, router } from '@inertiajs/vue3';
@@ -28,7 +29,7 @@ const deleteUser = (user: User) => {
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
             <div class="flex w-full justify-end">
-                <Link :href="route('users.create')">
+                <Link :href="route('users.create')" v-if="can('users.create')">
                     <Button type="button">
                         <Plus />
                         <span>User</span>
@@ -62,7 +63,9 @@ const deleteUser = (user: User) => {
                         <TableCell> {{ user.created_at }}</TableCell>
                         <TableCell class="">
                             <div class="flex w-full items-center justify-end space-x-2">
-                                <Button @click="deleteUser(user)" type="button" variant="destructive" size="sm"><Trash2 /></Button>
+                                <Button v-if="can('users.delete')" @click="deleteUser(user)" type="button" variant="destructive" size="sm"
+                                    ><Trash2
+                                /></Button>
                                 <CustomDialog title="View User" description="">
                                     <template #trigger>
                                         <Button type="button" variant="default" size="sm"><Eye /></Button>
@@ -71,7 +74,7 @@ const deleteUser = (user: User) => {
                                         <Show :user-id="user.id" />
                                     </template>
                                 </CustomDialog>
-                                <Link :href="route('users.edit', { user: user.id })">
+                                <Link v-if="can('users.update')" :href="route('users.edit', { user: user.id })">
                                     <Button type="button" variant="secondary" size="sm"><Pen /></Button>
                                 </Link>
                             </div>
