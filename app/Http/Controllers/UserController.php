@@ -56,7 +56,8 @@ class UserController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit(User $user) {
-        return inertia('admin/users/Update', ['user' => $user]);
+        $user->load(['roles']);
+        return inertia('admin/users/Update', ['user' => $user, 'roles' => Role::all(),]);
     }
 
     /**
@@ -67,11 +68,13 @@ class UserController extends Controller {
             'name' => ['required', 'max:255', 'min:2'],
             'email' => ['required', 'email', Rule::unique('users', 'email')->ignoreModel($user)],
             'password' => ['sometimes', 'nullable', 'min:6', 'max:255'],
+            'roleId' => ['sometimes', 'numeric', 'exists:roles,id'],
         ]);
         if ($validated['password'] == '') {
             unset($validated['password']);
         }
         $user->update($validated);
+        $user->roles()->sync($validated['roleId']);
         return redirect()->route('users.index')->with('success', 'User Created Successfully');
     }
 

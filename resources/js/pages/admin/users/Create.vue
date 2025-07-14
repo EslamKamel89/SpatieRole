@@ -36,7 +36,7 @@ const props = defineProps<{
 <template>
     <Head title="Create User" />
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+        <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl p-4">
             <form @submit.prevent="form.post(route('users.store'))" class="flex w-full flex-col space-y-3">
                 <div class="grid w-full items-center gap-1.5">
                     <Label for="name">Name</Label>
@@ -54,7 +54,7 @@ const props = defineProps<{
                     <div class="text-xs font-thin text-red-700" v-if="form.errors.password">{{ form.errors.password }}</div>
                 </div>
                 <div class="grid w-full items-center gap-1.5">
-                    <Label for="password">Select Role</Label>
+                    <Label>Select Role</Label>
                     <Select v-model="form.roleId">
                         <SelectTrigger class="w-full">
                             <SelectValue placeholder="Select Role" />
