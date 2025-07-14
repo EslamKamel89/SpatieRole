@@ -38,7 +38,7 @@ class HandleInertiaRequests extends Middleware {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
         /** @var User $user */
         $user = request()->user();
-        $permissions =  $user->getAllPermissions();
+        $permissions =  $user?->getAllPermissions();
         return [
             ...parent::share($request),
             'name' => config('app.name'),

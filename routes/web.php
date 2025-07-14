@@ -5,11 +5,11 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome');
-})->name('home');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/', function () {
+        return redirect()->route('dashboard');
+    })->name('home');
     Route::resource('/users', UserController::class)
         ->only(['create', 'store'])->middleware('permission:users.create');
     Route::resource('/users', UserController::class)
